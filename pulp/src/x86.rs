@@ -841,8 +841,23 @@ mod tests {
 	}
 
 	#[test]
+	fn test_v3_512b_min_i64s() {
+		if let Some(v3) = V3::try_new() {
+			eprintln!("executing V3_512b minimum regression on AVX2");
+			v3.vectorize(|| {
+				let simd = V3_512b(v3);
+				let a = [i64::MIN, -9, 0, 17, 3, i64::MAX, -4, 8];
+				let b = [i64::MAX, 2, -1, 17, -7, 0, -8, 9];
+				let actual: [i64; 8] = cast!(simd.min_i64s(cast!(a), cast!(b)));
+				assert_eq!(actual, core::array::from_fn(|i| a[i].min(b[i])));
+			});
+		}
+	}
+
+	#[test]
 	fn test_v3_512b_masked_loads() {
 		if let Some(v3) = V3::try_new() {
+			eprintln!("executing V3_512b masked-load regression on AVX2");
 			v3.vectorize(|| {
 				let simd = V3_512b(v3);
 
