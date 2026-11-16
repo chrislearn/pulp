@@ -843,6 +843,7 @@ mod tests {
 	#[test]
 	fn test_v3_512b_min_i64s() {
 		if let Some(v3) = V3::try_new() {
+			#[cfg(feature = "std")]
 			eprintln!("executing V3_512b minimum regression on AVX2");
 			v3.vectorize(|| {
 				let simd = V3_512b(v3);
@@ -857,6 +858,7 @@ mod tests {
 	#[test]
 	fn test_v3_512b_masked_loads() {
 		if let Some(v3) = V3::try_new() {
+			#[cfg(feature = "std")]
 			eprintln!("executing V3_512b masked-load regression on AVX2");
 			v3.vectorize(|| {
 				let simd = V3_512b(v3);
