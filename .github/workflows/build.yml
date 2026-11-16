@@ -38,3 +38,17 @@ jobs:
           targets: wasm32-unknown-unknown
       - run: cargo check -p pulp --target wasm32-unknown-unknown
       - run: cargo check -p pulp --target wasm32-unknown-unknown --no-default-features --features std,x86-v3
+  aarch64:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.0
+          targets: aarch64-unknown-linux-gnu
+      - run: cargo check -p pulp --lib --target aarch64-unknown-linux-gnu --no-default-features
+        env:
+          RUSTFLAGS: -Dwarnings
+      - run: cargo check -p pulp --lib --target aarch64-unknown-linux-gnu --no-default-features
+        env:
+          RUSTFLAGS: -Dwarnings -Ctarget-feature=+aes,+neon

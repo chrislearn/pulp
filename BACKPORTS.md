@@ -20,6 +20,12 @@ feature configurations. Native aarch64 tests and x86_64 cross-compilation are
 also run locally. An unsupported SIMD CPU can skip those architecture-specific
 test bodies; the Linux logs explicitly report when AVX2 regressions execute.
 
+Two compatibility fixes keep validation strict on current toolchains: benchmark
+fixtures retain 128-byte alignment but allocate their large buffers on the heap,
+and AArch64 no_std detection maps the runtime `pmull` / `asimd` aliases to rustc's
+`aes` / `neon` target features. The latter is cross-checked with and without AES
+enabled; standard-library runtime detection is unchanged.
+
 This is a temporary exact-revision Cargo patch until a compatible maintained
 release is available. The upstream main branch already contains these fixes;
 no duplicate PR against that branch is being opened. The workflow is scoped to
